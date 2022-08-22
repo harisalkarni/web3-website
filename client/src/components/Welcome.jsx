@@ -2,9 +2,9 @@ import React, {useContext} from 'react'
 import { AiFillPlayCircle } from 'react-icons/ai'
 import { SiEthereum} from 'react-icons/si'
 import { BsInfoCircle} from 'react-icons/bs'
-
+import { shortenAddress } from '../utils/shortenAddress'
 import { Loader } from '.'
-import { TransactionContext } from '../context/TransactionContext'
+import { TransactionContext } from "../context/TransactionContext";
 
 const companyCommonStyles = 'min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white'
 
@@ -13,7 +13,16 @@ const Input = ({ placeholder, name, type, value, handleChange}) => (
 )
 
 const Welcome = () => {
-    // const {connectWallet} = useContext(TransactionContext);
+    const {connectWallet, currentAccount, formData, setFormData, handleChange, sendTransaction} = useContext(TransactionContext);
+
+    const handleSubmit = (e) => {
+        const { addressTo, amount, keyword, message } = formData;
+        e.preventDefault();
+
+        if(!addressTo || !amount || !keyword || !message) return;
+
+        sendTransaction();
+    }
 
   return (
     <div className='flex w-full justify-center items-center'>
@@ -25,10 +34,12 @@ const Welcome = () => {
                 <p className='text-left mt-5 text-white font-light md:w-9/12 w-11/12 text-base'>
                     Explore the Crypto world. Buy and sell cryptocurrencies easly on Krypto.
                 </p>
-                <button type='button' onClick={connectWallet} className='flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]' >
+                {!currentAccount && (
+                    <button type='button' onClick={connectWallet} className='flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]' >
                     <AiFillPlayCircle className='text-white mr-2' />
                     <p className='text-white text-base font-semibold'>Connect Wallet</p>
                 </button>
+                )}
                 <div className='grid sm:grid-cols-3 grid-cols-2 w-full mt-10'>
                     <div className={`rounded-tl-2xl ${companyCommonStyles}`}>
                         Reliability
@@ -61,22 +72,22 @@ const Welcome = () => {
                             <BsInfoCircle fontSize={17} color='#fff' />
                         </div>
                         <div>
-                            <p className='text-white font-light text-sm'>Address</p>
+                            <p className='text-white font-light text-sm'>{shortenAddress(currentAccount)}</p>
                             <p className='text-white font-semibold text-lg mt-1'>Ethereum</p>
                         </div>
                     </div>
                 </div>
                 <div className='p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism'>
-                    <Input placeholder='Address to' name="addressTo" type='text'  />
-                    <Input placeholder='Amount (ETH)' name="amount" type='number'  />
-                    <Input placeholder='Keyword (Gif)' name="keyword" type='text'  />
-                    <Input placeholder='Enter Message' name="message" type='text'  />
+                    <Input placeholder='Address to' name="addressTo" type='text' handleChange={handleChange}  />
+                    <Input placeholder='Amount (ETH)' name="amount" type='number' handleChange={handleChange}  />
+                    <Input placeholder='Keyword (Gif)' name="keyword" type='text'  handleChange={handleChange} />
+                    <Input placeholder='Enter Message' name="message" type='text' handleChange={handleChange}  />
 
                     <div className='h-[1px] w-full bg-gray-400 my-2'>
                         {false ? (
                             <Loader />
                         ) : (
-                            <button type='button' className='text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer' >
+                            <button type='button' className='text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer' onClick= {handleSubmit} >
                             Send Now
                             </button>
                         )}
