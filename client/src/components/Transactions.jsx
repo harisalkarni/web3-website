@@ -39,6 +39,8 @@ const TransactionCard = ({ addressTo, addressFrom, timestamp, message, keyword, 
   )
 }
 
+//update something lah
+
 const Transactions = () => { 
 
   const { transactions, currentAccount} = useContext(TransactionContext)
