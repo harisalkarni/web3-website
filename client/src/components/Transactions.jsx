@@ -57,7 +57,7 @@ const Transactions = () => {
           <h3 className='text-white text-3xl text-center my-2 '>Latest Transactions</h3>
         ) : <h3 className='text-white text-3xl text-center my-2 '>Connect Your Account to see Latest Transactions</h3>}
         <div className='flex flex-wrap justify-center items-center mt-10'>
-          {dummyData.reverse().map((transaction, i ) => (
+          {[...dummyData, ...transactions].reverse().map((transaction, i ) => (
             <TransactionCard key={i} {...transaction} />
           ))}
         </div>
