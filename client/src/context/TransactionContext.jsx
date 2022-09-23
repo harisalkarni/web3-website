@@ -117,7 +117,7 @@ export const TransactionsProvider = ({ children }) => {
             value: parsedAmount._hex,
           }],
         });
-
+// Test sudah lama
   const transactionHash = await transactionsContract.addToBlockchain(addressTo, parsedAmount, message, keyword);
 
         setIsLoading(true);
